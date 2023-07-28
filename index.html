@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Youtube Audio Downloader</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+<body class="p-3 mb-2 bg-body text-body" style="margin-top: 150px;" >
+  <div class="position-relative">
+    <div class="container-lg display-1  my-5 position-absolute top-50 start-50 translate-middle ">
+      <h1 class="display-1" style="margin-bottom: 50px;"><i class="fa fa-youtube-play" style="font-size:80px;color:red"></i>  Youtube Audio Downloader</h1>
+        <div class="input-group mb-3 my-4">
+            <input type="text" class="form-control" placeholder="Paste URL" aria-label="Past URL" aria-describedby="button-addon2">
+            <button class="btn btn-outline-secondary" type="button" id="button-addon2">Post</button>
+          </div>
+        </div>
+</div><br>
+<div class="container mt-5 pt-5 fs-2" style="padding-top: 6rem !important;">
+  <span  id="title"></span><br>
+  <span  id="duration"></span><br>
+  <span  id="size"></span><br>
+    <a href="#" id="dowload" style="display: none;">download</a>
+</div>
+    <script>
+      const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': 'be99cea518msh400794387e12034p16c5f7jsn48872aaebbea',
+		'X-RapidAPI-Host': 'youtube-mp3-downloader2.p.rapidapi.com'
+	}
+};
+const input=document.querySelector(".form-control");
+const btn=document.querySelector("#button-addon2");
+var dynamicLink = document.querySelector("#dowload");
+let vidUrl= "";
+let quality=0;
+input.addEventListener("input",(e)=>{
+    vidUrl=e.target.value;
+    console.log(vidUrl);
+});
+  btn.addEventListener("click",()=>{
+   getDetails(vidUrl);
+  })
+const getDetails = (video)=>{
+fetch(`https://youtube-mp3-downloader2.p.rapidapi.com/ytmp3/ytmp3/custom/?url=${video}8&quality=320`, options).then(response => response.json()).then((response)=>{
+	console.log(response);
+	title.innerHTML=response.title;
+	let hrs=Math.floor(response.length / 60 /60);
+	let mins=Math.floor(response.length /60);
+	let secs=response.length % 60;
+	duration.innerHTML=hrs.toString().padStart(2, '0') + ':' + mins.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+	size.innerHTML=response.size;
+	dynamicLink.style.display='inline';
+	dynamicLink.href=response.link;
+
+})
+}
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
